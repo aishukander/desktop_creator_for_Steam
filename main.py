@@ -2,6 +2,7 @@ import os
 import glob
 import re
 import stat
+import shutil
 
 default_path = os.path.expanduser("~/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/")
 icon_folder = os.path.expanduser("~/.var/app/com.valvesoftware.Steam/data/icons/hicolor/")
@@ -80,6 +81,14 @@ def main():
 
     os.system("clear")
     print(f"Desktop entry created: {desktop_file}")
+
+    # ask if the user wants to create application shortcut
+    next_action = input("Do you need to create an application shortcut? (y/n): ")
+    next_action = next_action.lower()
+    if next_action == 'y':
+        shutil.copy2(desktop_file, os.path.expanduser(f"~/.local/share/applications/{selected['name'].replace(' ', '_')}.desktop"))
+    else:
+        return
 
 def find_library(root_dir):
     vdf_path = os.path.expanduser(f"{root_dir}libraryfolders.vdf")
